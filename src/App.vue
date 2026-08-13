@@ -9,11 +9,13 @@ const modes = [
 
 const TIMER_STORAGE_KEY = 'tomato-timer-state';
 const TIMER_STORAGE_VERSION = 1;
+const SOUND_ENABLED_STORAGE_KEY = 'tomato-notification-sound-enabled';
 
 const currentMode = ref('focus');
 const secondsLeft = ref(modes[0].duration);
 const running = ref(false);
 const completedPomodoros = ref(Number(localStorage.getItem('tomato-pomodoros') || 0));
+const soundEnabled = ref(localStorage.getItem(SOUND_ENABLED_STORAGE_KEY) !== 'false');
 const plan = ref(null);
 const taskInput = ref('');
 const tasks = ref(JSON.parse(localStorage.getItem('tomato-garden-tasks') || '[]'));
@@ -55,6 +57,54 @@ function saveTimerState() {
   }));
 }
 
+function saveSoundPreference() {
+  localStorage.setItem(SOUND_ENABLED_STORAGE_KEY, String(soundEnabled.value));
+}
+
+function requestNotificationPermission() {
+  if (typeof window === 'undefined' || !('Notification' in window) || Notification.permission !== 'default') return;
+  Promise.resolve(Notification.requestPermission()).catch(() => {});
+}
+
+function playCompletionSound() {
+  if (!soundEnabled.value) return;
+
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const context = new AudioContext();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.frequency.value = 660;
+    gain.gain.setValueAtTime(0.08, context.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2);
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    oscillator.start();
+    oscillator.stop(context.currentTime + 0.2);
+  } catch {
+    // Audio playback can be blocked by browser autoplay policies.
+  }
+}
+
+function showCompletionNotification(modeKey) {
+  if (typeof window === 'undefined' || !('Notification' in window) || Notification.permission !== 'granted') return;
+
+  const body = modeKey === 'focus'
+    ? 'Focus session complete. Time for a break.'
+    : 'Break complete. Ready for your next focus session.';
+  try {
+    new Notification('Tomato garden', { body });
+  } catch {
+    // Notifications are optional and must never interrupt the timer.
+  }
+}
+
+function notifySessionCompletion(modeKey) {
+  playCompletionSound();
+  showCompletionNotification(modeKey);
+}
+
 function clearTimer() {
   clearInterval(timer);
   timer = null;
@@ -63,20 +113,23 @@ function clearTimer() {
 function finishCurrentSession() {
   clearTimer();
   running.value = false;
-  if (currentMode.value === 'focus') {
+  const completedMode = currentMode.value;
+  if (completedMode === 'focus') {
     completedPomodoros.value += 1;
     localStorage.setItem('tomato-pomodoros', String(completedPomodoros.value));
   }
-  const nextMode = currentMode.value === 'focus'
+  const nextMode = completedMode === 'focus'
     ? (completedPomodoros.value % 4 === 0 ? 'longBreak' : 'shortBreak')
     : 'focus';
   currentMode.value = nextMode;
   secondsLeft.value = modeDuration(nextMode);
   saveTimerState();
+  notifySessionCompletion(completedMode);
 }
 
 function startTimer() {
   if (timer) return;
+  requestNotificationPermission();
   running.value = true;
   saveTimerState();
   timer = setInterval(() => {
@@ -108,6 +161,11 @@ function pickMode(modeKey) {
   running.value = false;
   clearTimer();
   saveTimerState();
+}
+
+function toggleSound() {
+  soundEnabled.value = !soundEnabled.value;
+  saveSoundPreference();
 }
 
 function restoreTimerState() {
@@ -222,6 +280,9 @@ onBeforeUnmount(() => {
           <button class="secondary" @click="pauseTimer">Pause</button>
           <button class="ghost" @click="resetTimer">Reset</button>
         </div>
+        <button class="sound-toggle" type="button" @click="toggleSound">
+          Sound: {{ soundEnabled ? 'On' : 'Off' }}
+        </button>
       </article>
 
       <article class="panel garden-panel">
