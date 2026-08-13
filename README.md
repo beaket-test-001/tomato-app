@@ -1,6 +1,6 @@
 # Tomato Garden App
 
-A Vue + Vite pomodoro-style app with a cozy garden theme. It helps you focus with timed work sessions, take breaks, manage tasks, and enjoy a small garden-inspired dashboard powered by MSW mock data.
+A Vue + Vite pomodoro-style app with a cozy garden theme. It helps you focus with timed work sessions, take breaks, manage tasks, and grow a daily garden from completed sessions.
 
 ## Features
 
@@ -8,13 +8,13 @@ A Vue + Vite pomodoro-style app with a cozy garden theme. It helps you focus wit
 - Start, pause, and reset controls
 - Task list for the next sprint
 - Persistent task storage in the browser
-- Mock garden plan and tips from MSW
+- Daily focus targets, progress stages, and session history
+- Persistent task queue and preferences
 
 ## Tech Stack
 
 - Vue 3
 - Vite
-- MSW
 
 ## Getting Started
 
@@ -35,7 +35,3 @@ To create a production build:
 ```bash
 npm run build
 ```
-
-## Notes
-
-The app uses MSW in development to provide mock data for the garden snapshot and tips.

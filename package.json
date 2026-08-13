@@ -12,7 +12,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "msw": "^2.4.0",
     "vue": "^3.5.3"
   },
   "devDependencies": {
@@ -21,10 +20,5 @@
     "jsdom": "^29.1.1",
     "vite": "^8.2.1",
     "vitest": "^4.1.10"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }
