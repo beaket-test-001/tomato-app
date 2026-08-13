@@ -248,6 +248,38 @@ describe('App', () => {
     expect(wrapper.find('.progress-copy').text()).toContain('2 of 4');
   });
 
+  it('uses the local calendar day and renders zero-count days in the seven-day history', () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 13, 12));
+    localStorage.setItem('tomato-daily-focus-history', JSON.stringify({
+      version: 1,
+      days: { '2026-08-10': 2, '2026-08-13': 1 },
+    }));
+
+    const wrapper = mount(App);
+
+    expect(wrapper.find('.progress-copy').text()).toContain('1 of 4');
+    expect(wrapper.findAll('.week-history li')).toHaveLength(7);
+    expect(wrapper.find('.week-history').text()).toContain('08-10');
+    expect(wrapper.findAll('.week-history li').map((item) => item.find('strong').text())).toContain('0');
+  });
+
+  it('records only completed focus sessions in the daily history and preserves the previous progress key', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 13, 12));
+    const wrapper = mount(App);
+    await addFocusTask(wrapper);
+    await wrapper.find('.primary').trigger('click');
+    await vi.advanceTimersByTimeAsync(25 * 60 * 1000);
+
+    expect(JSON.parse(localStorage.getItem('tomato-daily-focus-history')).days['2026-08-13']).toBe(1);
+    expect(JSON.parse(localStorage.getItem('tomato-daily-progress')).count).toBe(1);
+
+    await wrapper.find('.primary').trigger('click');
+    await vi.advanceTimersByTimeAsync(5 * 60 * 1000);
+    expect(JSON.parse(localStorage.getItem('tomato-daily-focus-history')).days['2026-08-13']).toBe(1);
+  });
+
   it('edits a task and offers undo after removal', async () => {
     const wrapper = mount(App);
     await addFocusTask(wrapper, 'Draft copy');

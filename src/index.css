@@ -76,6 +76,12 @@ h1, h2, h3, p { margin: 0; }
 .garden-stage { display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 18px; background: rgba(122,217,122,0.08); }
 .garden-stage > span { font-size: 2.7rem; }
 .garden-stage p { margin-top: 4px; color: #9fb0c3; line-height: 1.45; }
+.week-history { margin-top: 18px; }
+.week-history h4 { margin: 0 0 10px; }
+.week-history ol { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; align-items: end; height: 118px; padding: 0; margin: 0; list-style: none; }
+.week-history li { display: grid; grid-template-rows: 1fr auto auto; justify-items: center; gap: 3px; height: 100%; color: #9fb0c3; font-size: 0.72rem; }
+.week-bar { align-self: end; width: min(100%, 22px); border-radius: 8px 8px 3px 3px; background: linear-gradient(#ffd36b, #f97316); }
+.week-history strong { color: #f7f7ea; font-size: 0.78rem; }
 .history-list { display: grid; gap: 8px; margin-top: 18px; }
 .history-list h4 { margin: 0 0 2px; }
 .history-item { display: flex; justify-content: space-between; gap: 12px; padding: 9px 11px; border-radius: 12px; background: rgba(255,255,255,0.04); }
