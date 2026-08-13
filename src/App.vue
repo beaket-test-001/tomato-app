@@ -1,11 +1,14 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 
 const modes = [
   { key: 'focus', label: 'Focus', duration: 25 * 60 },
   { key: 'shortBreak', label: 'Short break', duration: 5 * 60 },
   { key: 'longBreak', label: 'Long break', duration: 15 * 60 },
 ];
+
+const TIMER_STORAGE_KEY = 'tomato-timer-state';
+const TIMER_STORAGE_VERSION = 1;
 
 const currentMode = ref('focus');
 const secondsLeft = ref(modes[0].duration);
@@ -38,43 +41,113 @@ function saveTasks() {
   localStorage.setItem('tomato-garden-tasks', JSON.stringify(tasks.value));
 }
 
+function modeDuration(modeKey) {
+  return modes.find((mode) => mode.key === modeKey)?.duration;
+}
+
+function saveTimerState() {
+  localStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify({
+    version: TIMER_STORAGE_VERSION,
+    mode: currentMode.value,
+    secondsLeft: secondsLeft.value,
+    running: running.value,
+    savedAt: Date.now(),
+  }));
+}
+
+function clearTimer() {
+  clearInterval(timer);
+  timer = null;
+}
+
+function finishCurrentSession() {
+  clearTimer();
+  running.value = false;
+  if (currentMode.value === 'focus') {
+    completedPomodoros.value += 1;
+    localStorage.setItem('tomato-pomodoros', String(completedPomodoros.value));
+  }
+  const nextMode = currentMode.value === 'focus'
+    ? (completedPomodoros.value % 4 === 0 ? 'longBreak' : 'shortBreak')
+    : 'focus';
+  currentMode.value = nextMode;
+  secondsLeft.value = modeDuration(nextMode);
+  saveTimerState();
+}
+
 function startTimer() {
-  if (running.value) return;
+  if (timer) return;
   running.value = true;
+  saveTimerState();
   timer = setInterval(() => {
     secondsLeft.value -= 1;
     if (secondsLeft.value <= 0) {
-      clearInterval(timer);
-      running.value = false;
-      if (currentMode.value === 'focus') {
-        completedPomodoros.value += 1;
-        localStorage.setItem('tomato-pomodoros', String(completedPomodoros.value));
-      }
-      const nextMode = currentMode.value === 'focus'
-        ? (completedPomodoros.value % 4 === 0 ? 'longBreak' : 'shortBreak')
-        : 'focus';
-      currentMode.value = nextMode;
-      secondsLeft.value = modes.find((mode) => mode.key === nextMode).duration;
+      finishCurrentSession();
+      return;
     }
+    saveTimerState();
   }, 1000);
 }
 
 function pauseTimer() {
   running.value = false;
-  clearInterval(timer);
+  clearTimer();
+  saveTimerState();
 }
 
 function resetTimer() {
   running.value = false;
-  clearInterval(timer);
+  clearTimer();
   secondsLeft.value = currentModeConfig.value.duration;
+  saveTimerState();
 }
 
 function pickMode(modeKey) {
   currentMode.value = modeKey;
-  secondsLeft.value = modes.find((mode) => mode.key === modeKey).duration;
+  secondsLeft.value = modeDuration(modeKey);
   running.value = false;
-  clearInterval(timer);
+  clearTimer();
+  saveTimerState();
+}
+
+function restoreTimerState() {
+  let savedState;
+  try {
+    savedState = JSON.parse(localStorage.getItem(TIMER_STORAGE_KEY));
+  } catch {
+    localStorage.removeItem(TIMER_STORAGE_KEY);
+    return;
+  }
+
+  const duration = modeDuration(savedState?.mode);
+  if (
+    !savedState
+    || savedState.version !== TIMER_STORAGE_VERSION
+    || !duration
+    || !Number.isInteger(savedState.secondsLeft)
+    || savedState.secondsLeft < 0
+    || savedState.secondsLeft > duration
+    || typeof savedState.running !== 'boolean'
+    || !Number.isFinite(savedState.savedAt)
+  ) {
+    localStorage.removeItem(TIMER_STORAGE_KEY);
+    return;
+  }
+
+  currentMode.value = savedState.mode;
+  secondsLeft.value = savedState.secondsLeft;
+  running.value = savedState.running;
+
+  if (!running.value) return;
+
+  const elapsedSeconds = Math.max(0, Math.floor((Date.now() - savedState.savedAt) / 1000));
+  if (elapsedSeconds >= secondsLeft.value) {
+    finishCurrentSession();
+    return;
+  }
+
+  secondsLeft.value -= elapsedSeconds;
+  startTimer();
 }
 
 function addTask() {
@@ -96,8 +169,13 @@ function removeTask(index) {
 }
 
 onMounted(async () => {
+  restoreTimerState();
   const response = await fetch('/api/plan');
   plan.value = await response.json();
+});
+
+onBeforeUnmount(() => {
+  clearTimer();
 });
 </script>
 
