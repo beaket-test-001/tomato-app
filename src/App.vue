@@ -50,7 +50,9 @@ function startTimer() {
         completedPomodoros.value += 1;
         localStorage.setItem('tomato-pomodoros', String(completedPomodoros.value));
       }
-      const nextMode = currentMode.value === 'focus' ? 'shortBreak' : 'focus';
+      const nextMode = currentMode.value === 'focus'
+        ? (completedPomodoros.value % 4 === 0 ? 'longBreak' : 'shortBreak')
+        : 'focus';
       currentMode.value = nextMode;
       secondsLeft.value = modes.find((mode) => mode.key === nextMode).duration;
     }
