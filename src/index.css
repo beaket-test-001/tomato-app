@@ -34,6 +34,7 @@ h1, h2, h3, p { margin: 0; }
 .status { color: #b6c6d8; }
 .controls { display: flex; gap: 10px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
 .controls button, .task-input-row button, .task-actions button { border: none; border-radius: 999px; padding: 10px 14px; color: white; }
+.sound-toggle { display: block; margin: 14px auto 0; border: 1px solid rgba(122,217,122,0.35); border-radius: 999px; padding: 8px 12px; background: transparent; color: #cfe0f5; }
 .primary { background: linear-gradient(135deg, #f97316, #ff7a1a); }
 .secondary { background: #35506d; }
 .ghost { background: transparent; border: 1px solid rgba(255,255,255,0.12)!important; }

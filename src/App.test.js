@@ -14,6 +14,13 @@ describe('App', () => {
         }),
       })
     );
+    Object.defineProperty(window, 'Notification', {
+      configurable: true,
+      value: {
+        permission: 'default',
+        requestPermission: vi.fn(() => Promise.resolve('granted')),
+      },
+    });
   });
 
   afterEach(() => {
@@ -49,6 +56,26 @@ describe('App', () => {
 
     expect(wrapper.find('.mode-name').text()).toBe('Short break');
     expect(wrapper.find('.ring h2').text()).toBe('05:00');
+  });
+
+  it('requests notification permission only after Start is pressed', async () => {
+    const wrapper = mount(App);
+
+    expect(Notification.requestPermission).not.toHaveBeenCalled();
+    await wrapper.find('.primary').trigger('click');
+    expect(Notification.requestPermission).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+
+  it('persists the sound preference', async () => {
+    const wrapper = mount(App);
+
+    expect(wrapper.find('.sound-toggle').text()).toContain('On');
+    await wrapper.find('.sound-toggle').trigger('click');
+
+    expect(wrapper.find('.sound-toggle').text()).toContain('Off');
+    expect(localStorage.getItem('tomato-notification-sound-enabled')).toBe('false');
+    wrapper.unmount();
   });
 
   it('restores an active timer using elapsed wall-clock time', async () => {
