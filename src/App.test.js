@@ -107,6 +107,62 @@ describe('App', () => {
     wrapper.unmount();
   });
 
+  it('saves each custom session duration and applies it after reset', async () => {
+    const wrapper = mount(App);
+    await wrapper.find('.settings-toggle').trigger('click');
+    const inputs = wrapper.findAll('.duration-settings input');
+
+    await inputs[0].setValue(40);
+    await inputs[0].trigger('change');
+    await inputs[1].setValue(8);
+    await inputs[1].trigger('change');
+    await inputs[2].setValue(20);
+    await inputs[2].trigger('change');
+
+    expect(JSON.parse(localStorage.getItem('tomato-session-durations'))).toEqual({ focus: 40, shortBreak: 8, longBreak: 20 });
+    expect(wrapper.find('.ring h2').text()).toBe('25:00');
+    await wrapper.find('.ghost').trigger('click');
+    expect(wrapper.find('.ring h2').text()).toBe('40:00');
+  });
+
+  it('keeps a running session unchanged and uses custom durations for the next mode', async () => {
+    vi.useFakeTimers();
+    const wrapper = mount(App);
+    await addFocusTask(wrapper);
+    await wrapper.find('.primary').trigger('click');
+    await vi.advanceTimersByTimeAsync(1_000);
+    await wrapper.find('.settings-toggle').trigger('click');
+    const inputs = wrapper.findAll('.duration-settings input');
+    await inputs[0].setValue(1);
+    await inputs[0].trigger('change');
+    await inputs[1].setValue(2);
+    await inputs[1].trigger('change');
+
+    expect(wrapper.find('.ring h2').text()).toBe('24:59');
+    await vi.advanceTimersByTimeAsync((24 * 60 + 59) * 1000);
+    expect(wrapper.find('.mode-name').text()).toBe('Short break');
+    expect(wrapper.find('.ring h2').text()).toBe('02:00');
+  });
+
+  it('restores safe standard durations from malformed saved values', async () => {
+    localStorage.setItem('tomato-session-durations', JSON.stringify({ focus: 0, shortBreak: '5', longBreak: 61 }));
+    const wrapper = mount(App);
+    await wrapper.find('.settings-toggle').trigger('click');
+
+    expect(wrapper.findAll('.duration-settings input').map((input) => input.element.value)).toEqual(['25', '5', '15']);
+    await wrapper.find('.duration-settings button').trigger('click');
+    expect(JSON.parse(localStorage.getItem('tomato-session-durations'))).toEqual({ focus: 25, shortBreak: 5, longBreak: 15 });
+  });
+
+  it('uses the legacy preset and custom focus value until duration settings are saved', async () => {
+    localStorage.setItem('tomato-focus-preset', 'deep');
+    localStorage.setItem('tomato-custom-focus-minutes', '45');
+    const wrapper = mount(App);
+
+    await wrapper.find('.settings-toggle').trigger('click');
+    expect(wrapper.findAll('.duration-settings input').map((input) => input.element.value)).toEqual(['45', '10', '25']);
+  });
+
   it('restores an active timer using elapsed wall-clock time', async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-08-13T06:00:10Z'));

@@ -19,11 +19,41 @@ const SOUND_ENABLED_STORAGE_KEY = 'tomato-notification-sound-enabled';
 const PRESET_STORAGE_KEY = 'tomato-focus-preset';
 const FEEDBACK_STORAGE_KEY = 'tomato-session-feedback';
 const CUSTOM_MINUTES_STORAGE_KEY = 'tomato-custom-focus-minutes';
+const SESSION_DURATIONS_STORAGE_KEY = 'tomato-session-durations';
 const DAILY_PROGRESS_STORAGE_KEY = 'tomato-daily-progress';
 const DAILY_HISTORY_STORAGE_KEY = 'tomato-daily-focus-history';
 const DAILY_TARGET_STORAGE_KEY = 'tomato-daily-target';
 const ACTIVE_TASK_STORAGE_KEY = 'tomato-active-task';
 const SESSION_HISTORY_STORAGE_KEY = 'tomato-session-history';
+const DEFAULT_DURATIONS = { focus: 25, shortBreak: 5, longBreak: 15 };
+
+function validDuration(value, mode) {
+  const maximum = mode === 'focus' ? 120 : 60;
+  return Number.isInteger(value) && value >= 1 && value <= maximum;
+}
+
+function readSessionDurations() {
+  const raw = localStorage.getItem(SESSION_DURATIONS_STORAGE_KEY);
+  if (raw === null) {
+    const legacyPreset = presets.find((preset) => preset.key === localStorage.getItem(PRESET_STORAGE_KEY)) || presets[0];
+    const legacyFocus = Number(localStorage.getItem(CUSTOM_MINUTES_STORAGE_KEY));
+    return {
+      focus: validDuration(legacyFocus, 'focus') ? legacyFocus : legacyPreset.focusMinutes,
+      shortBreak: legacyPreset.breakMinutes,
+      longBreak: legacyPreset.longBreakMinutes,
+    };
+  }
+  try {
+    const stored = JSON.parse(raw);
+    if (!stored || typeof stored !== 'object') return { ...DEFAULT_DURATIONS };
+    return Object.fromEntries(Object.entries(DEFAULT_DURATIONS).map(([mode, fallback]) => [
+      mode,
+      validDuration(stored[mode], mode) ? stored[mode] : fallback,
+    ]));
+  } catch {
+    return { ...DEFAULT_DURATIONS };
+  }
+}
 
 function readStoredList(key) {
   try {
@@ -90,7 +120,8 @@ const currentMode = ref('focus');
 const selectedPresetKey = ref(localStorage.getItem(PRESET_STORAGE_KEY) || 'starter');
 const selectedPreset = computed(() => presets.find((preset) => preset.key === selectedPresetKey.value) || presets[0]);
 const customFocusMinutes = ref(Number(localStorage.getItem(CUSTOM_MINUTES_STORAGE_KEY)) || null);
-const effectiveFocusMinutes = computed(() => customFocusMinutes.value || selectedPreset.value.focusMinutes);
+const sessionDurations = ref(readSessionDurations());
+const effectiveFocusMinutes = computed(() => sessionDurations.value.focus);
 const secondsLeft = ref(effectiveFocusMinutes.value * 60);
 const running = ref(false);
 const dailyHistory = ref(readDailyHistory());
@@ -177,10 +208,26 @@ function saveTasks() {
 }
 
 function modeDuration(modeKey) {
-  if (modeKey === 'focus') return effectiveFocusMinutes.value * 60;
-  if (modeKey === 'shortBreak') return selectedPreset.value.breakMinutes * 60;
-  if (modeKey === 'longBreak') return selectedPreset.value.longBreakMinutes * 60;
+  if (modeKey in sessionDurations.value) return sessionDurations.value[modeKey] * 60;
   return undefined;
+}
+
+function saveSessionDurations() {
+  sessionDurations.value = Object.fromEntries(Object.entries(DEFAULT_DURATIONS).map(([mode, fallback]) => [
+    mode,
+    validDuration(Number(sessionDurations.value[mode]), mode) ? Number(sessionDurations.value[mode]) : fallback,
+  ]));
+  localStorage.setItem(SESSION_DURATIONS_STORAGE_KEY, JSON.stringify(sessionDurations.value));
+}
+
+function restoreStandardDurations() {
+  const wasAtModeStart = atModeStart.value;
+  sessionDurations.value = { ...DEFAULT_DURATIONS };
+  localStorage.setItem(SESSION_DURATIONS_STORAGE_KEY, JSON.stringify(sessionDurations.value));
+  if (!running.value && wasAtModeStart) {
+    secondsLeft.value = modeDuration(currentMode.value);
+    saveTimerState();
+  }
 }
 
 function pickPreset(presetKey) {
@@ -188,6 +235,13 @@ function pickPreset(presetKey) {
   customFocusMinutes.value = null;
   localStorage.removeItem(CUSTOM_MINUTES_STORAGE_KEY);
   localStorage.setItem(PRESET_STORAGE_KEY, presetKey);
+  const preset = presets.find((item) => item.key === presetKey) || presets[0];
+  sessionDurations.value = {
+    focus: preset.focusMinutes,
+    shortBreak: preset.breakMinutes,
+    longBreak: preset.longBreakMinutes,
+  };
+  localStorage.setItem(SESSION_DURATIONS_STORAGE_KEY, JSON.stringify(sessionDurations.value));
   currentMode.value = 'focus';
   secondsLeft.value = modeDuration('focus');
   running.value = false;
@@ -200,6 +254,8 @@ function applyRecommendation() {
   if (!recommendation.value) return;
   customFocusMinutes.value = recommendation.value;
   localStorage.setItem(CUSTOM_MINUTES_STORAGE_KEY, String(recommendation.value));
+  sessionDurations.value = { ...sessionDurations.value, focus: recommendation.value };
+  localStorage.setItem(SESSION_DURATIONS_STORAGE_KEY, JSON.stringify(sessionDurations.value));
   currentMode.value = 'focus';
   secondsLeft.value = modeDuration('focus');
   clearTimer();
@@ -548,6 +604,14 @@ onBeforeUnmount(() => {
     <section class="panel preferences-panel">
       <button class="settings-toggle" :aria-expanded="settingsOpen" @click="settingsOpen = !settingsOpen">Settings & timer details</button>
       <div v-if="settingsOpen" class="settings-content">
+        <fieldset class="duration-settings">
+          <legend>Session durations</legend>
+          <p>Changes apply to your next session. Reset or choose a mode to use them now.</p>
+          <label>Focus <input v-model.number="sessionDurations.focus" type="number" min="1" max="120" aria-label="Focus duration in minutes" @change="saveSessionDurations" /> min</label>
+          <label>Short break <input v-model.number="sessionDurations.shortBreak" type="number" min="1" max="60" aria-label="Short break duration in minutes" @change="saveSessionDurations" /> min</label>
+          <label>Long break <input v-model.number="sessionDurations.longBreak" type="number" min="1" max="60" aria-label="Long break duration in minutes" @change="saveSessionDurations" /> min</label>
+          <button type="button" @click="restoreStandardDurations">Restore standard settings</button>
+        </fieldset>
         <div class="setting-row"><div><strong>Daily focus target</strong><p>Choose a realistic goal for today.</p></div><input v-model.number="dailyTarget" type="number" min="1" max="12" aria-label="Daily focus target" @change="saveDailyTarget" /></div>
         <div class="setting-row"><div><strong>Desktop notifications</strong><p>Status: {{ notificationPermission }}</p></div><button v-if="notificationPermission === 'default'" @click="enableNotifications">Enable notifications</button><span v-else-if="notificationPermission === 'granted'" class="setting-status">Enabled</span><span v-else class="setting-status">{{ notificationPermission === 'denied' ? 'Blocked in browser' : 'Not supported' }}</span></div>
         <button class="why-toggle" type="button" :aria-expanded="evidenceOpen" @click="evidenceOpen = !evidenceOpen">Why these times?</button>
