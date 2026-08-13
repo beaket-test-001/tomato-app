@@ -20,6 +20,7 @@ const PRESET_STORAGE_KEY = 'tomato-focus-preset';
 const FEEDBACK_STORAGE_KEY = 'tomato-session-feedback';
 const CUSTOM_MINUTES_STORAGE_KEY = 'tomato-custom-focus-minutes';
 const DAILY_PROGRESS_STORAGE_KEY = 'tomato-daily-progress';
+const DAILY_HISTORY_STORAGE_KEY = 'tomato-daily-focus-history';
 const DAILY_TARGET_STORAGE_KEY = 'tomato-daily-target';
 const ACTIVE_TASK_STORAGE_KEY = 'tomato-active-task';
 const SESSION_HISTORY_STORAGE_KEY = 'tomato-session-history';
@@ -34,8 +35,20 @@ function readStoredList(key) {
   }
 }
 
-function todayKey() {
-  return new Date().toISOString().slice(0, 10);
+function dateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function recentDateKeys(days = 7) {
+  return Array.from({ length: days }, (_, index) => {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() - (days - index - 1));
+    return dateKey(date);
+  });
 }
 
 function createTaskId() {
@@ -55,6 +68,24 @@ function readDailyCount() {
   }
 }
 
+function readDailyHistory() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(DAILY_HISTORY_STORAGE_KEY) || 'null');
+    if (stored?.version === 1 && typeof stored.days === 'object' && !Array.isArray(stored.days)) {
+      return Object.fromEntries(Object.entries(stored.days)
+        .filter(([date, count]) => /^\d{4}-\d{2}-\d{2}$/.test(date) && Number.isInteger(count) && count >= 0));
+    }
+
+    // Adopt the earlier one-day value without deleting or rewriting it.
+    const legacy = JSON.parse(localStorage.getItem(DAILY_PROGRESS_STORAGE_KEY) || 'null');
+    return /^\d{4}-\d{2}-\d{2}$/.test(legacy?.date) && Number.isInteger(legacy.count) && legacy.count >= 0
+      ? { [legacy.date]: legacy.count }
+      : {};
+  } catch {
+    return {};
+  }
+}
+
 const currentMode = ref('focus');
 const selectedPresetKey = ref(localStorage.getItem(PRESET_STORAGE_KEY) || 'starter');
 const selectedPreset = computed(() => presets.find((preset) => preset.key === selectedPresetKey.value) || presets[0]);
@@ -62,7 +93,8 @@ const customFocusMinutes = ref(Number(localStorage.getItem(CUSTOM_MINUTES_STORAG
 const effectiveFocusMinutes = computed(() => customFocusMinutes.value || selectedPreset.value.focusMinutes);
 const secondsLeft = ref(effectiveFocusMinutes.value * 60);
 const running = ref(false);
-const completedPomodoros = ref(readDailyCount());
+const dailyHistory = ref(readDailyHistory());
+const completedPomodoros = ref(dailyHistory.value[dateKey()] ?? readDailyCount());
 const soundEnabled = ref(localStorage.getItem(SOUND_ENABLED_STORAGE_KEY) !== 'false');
 const notificationPermission = ref(typeof Notification === 'undefined' ? 'unsupported' : Notification.permission);
 const dailyTarget = ref(Math.min(12, Math.max(1, Number(localStorage.getItem(DAILY_TARGET_STORAGE_KEY)) || 4)));
@@ -73,7 +105,7 @@ const storedActiveTaskId = localStorage.getItem(ACTIVE_TASK_STORAGE_KEY);
 const activeTaskId = ref(tasks.value.some((task) => task.id === storedActiveTaskId && !task.done)
   ? storedActiveTaskId
   : tasks.value.find((task) => !task.done)?.id || null);
-const sessionHistory = ref(readStoredList(SESSION_HISTORY_STORAGE_KEY).filter((item) => item.date === todayKey()));
+const sessionHistory = ref(readStoredList(SESSION_HISTORY_STORAGE_KEY).filter((item) => item.date === dateKey()));
 const awaitingFeedback = ref(false);
 const evidenceOpen = ref(false);
 const settingsOpen = ref(false);
@@ -89,6 +121,11 @@ const atModeStart = computed(() => secondsLeft.value === modeDuration(currentMod
 const canStart = computed(() => !running.value && (currentMode.value !== 'focus' || Boolean(activeTask.value)));
 const canSwitchMode = computed(() => !running.value && atModeStart.value);
 const dailyProgress = computed(() => Math.min(completedPomodoros.value, dailyTarget.value));
+const recentDailyHistory = computed(() => recentDateKeys().map((date) => ({
+  date,
+  count: dailyHistory.value[date] || 0,
+  label: date.slice(5),
+})));
 const gardenStage = computed(() => {
   const ratio = dailyProgress.value / dailyTarget.value;
   if (ratio >= 1) return { emoji: '🍅', title: 'Harvest ready', copy: 'You reached today’s focus goal.' };
@@ -171,7 +208,11 @@ function applyRecommendation() {
 }
 
 function saveDailyProgress() {
-  localStorage.setItem(DAILY_PROGRESS_STORAGE_KEY, JSON.stringify({ date: todayKey(), count: completedPomodoros.value }));
+  const today = dateKey();
+  dailyHistory.value = { ...dailyHistory.value, [today]: completedPomodoros.value };
+  localStorage.setItem(DAILY_HISTORY_STORAGE_KEY, JSON.stringify({ version: 1, days: dailyHistory.value }));
+  // Keep the previous key for existing installations and current integrations.
+  localStorage.setItem(DAILY_PROGRESS_STORAGE_KEY, JSON.stringify({ date: today, count: completedPomodoros.value }));
 }
 
 function saveDailyTarget() {
@@ -258,10 +299,12 @@ function finishCurrentSession() {
   running.value = false;
   const completedMode = currentMode.value;
   if (completedMode === 'focus') {
-    completedPomodoros.value += 1;
+    const today = dateKey();
+    completedPomodoros.value = (dailyHistory.value[today] || 0) + 1;
     saveDailyProgress();
+    sessionHistory.value = sessionHistory.value.filter((item) => item.date === today);
     sessionHistory.value.unshift({
-      date: todayKey(),
+      date: today,
       task: activeTask.value?.text || 'Focus session',
       minutes: effectiveFocusMinutes.value,
       completedAt: Date.now(),
@@ -484,6 +527,7 @@ onBeforeUnmount(() => {
         <div class="daily-progress" :aria-label="`${dailyProgress} of ${dailyTarget} focus sessions completed today`"><span :style="{ width: `${(dailyProgress / dailyTarget) * 100}%` }"></span></div>
         <p class="progress-copy">{{ dailyProgress }} of {{ dailyTarget }} focus sessions completed today</p>
         <div class="garden-stage"><span aria-hidden="true">{{ gardenStage.emoji }}</span><div><strong>{{ gardenStage.title }}</strong><p>{{ gardenStage.copy }}</p></div></div>
+        <div class="week-history" aria-label="Focus sessions over the last seven days"><h4>Last 7 days</h4><ol><li v-for="day in recentDailyHistory" :key="day.date"><span class="week-bar" :style="{ height: `${Math.max(8, Math.min(100, (day.count / dailyTarget) * 100))}%` }" :title="`${day.date}: ${day.count} focus sessions`"></span><strong>{{ day.count }}</strong><small>{{ day.label }}</small></li></ol></div>
         <div v-if="sessionHistory.length" class="history-list"><h4>Today’s harvests</h4><div v-for="item in sessionHistory" :key="item.completedAt" class="history-item"><span>{{ item.task }}</span><small>{{ item.minutes }} min</small></div></div>
       </article>
     </section>
