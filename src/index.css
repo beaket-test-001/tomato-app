@@ -104,10 +104,16 @@ h1, h2, h3, p { margin: 0; }
 .preferences-panel { margin-top: 20px; }
 .settings-toggle { width: 100%; padding: 0; border: 0; background: transparent; color: #f7f7ea; font-weight: 700; text-align: left; }
 .settings-content { display: grid; gap: 12px; margin-top: 18px; }
+.duration-settings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; padding: 14px; border: 0; border-radius: 16px; background: rgba(255,255,255,0.04); }
+.duration-settings legend { padding: 0; font-weight: 700; }
+.duration-settings > p { grid-column: 1 / -1; color: #9fb0c3; font-size: 0.88rem; }
+.duration-settings label { display: grid; gap: 6px; color: #cfe0f5; font-size: 0.86rem; }
+.duration-settings input { width: 100%; padding: 8px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; background: #0b1727; color: white; }
+.duration-settings button { grid-column: 1 / -1; justify-self: start; padding: 8px 11px; border: 0; border-radius: 999px; background: #35506d; color: white; }
 .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 14px; border-radius: 16px; background: rgba(255,255,255,0.04); }
 .setting-row p { margin-top: 4px; color: #9fb0c3; font-size: 0.88rem; }
 .setting-row input { width: 76px; padding: 8px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; background: #0b1727; color: white; }
 .setting-status { color: #7ad97a; font-size: 0.9rem; }
 .storage-note { margin-top: 18px; text-align: center; }
 @media (max-width: 800px) { .content-grid { grid-template-columns: 1fr; } .hero-card { flex-direction: column; align-items: flex-start; } .preset-picker { grid-template-columns: 1fr; } }
-@media (max-width: 520px) { .page-shell { padding-inline: 12px; } .panel, .hero-card { padding: 18px; border-radius: 18px; } .task-input-row { flex-direction: column; } .task-input-row button { width: 100%; } .task-item { align-items: flex-start; flex-direction: column; } .task-actions { width: 100%; flex-wrap: wrap; } .hero-pill { width: 100%; } .setting-row { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 520px) { .page-shell { padding-inline: 12px; } .panel, .hero-card { padding: 18px; border-radius: 18px; } .task-input-row { flex-direction: column; } .task-input-row button { width: 100%; } .task-item { align-items: flex-start; flex-direction: column; } .task-actions { width: 100%; flex-wrap: wrap; } .hero-pill { width: 100%; } .setting-row { align-items: flex-start; flex-direction: column; } .duration-settings { grid-template-columns: 1fr; } }
