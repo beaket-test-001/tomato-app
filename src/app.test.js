@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import App from './App.vue';
+import App from './app.vue';
 
 async function addFocusTask(wrapper, text = 'Draft the introduction') {
   await wrapper.find('#new-task').setValue(text);
