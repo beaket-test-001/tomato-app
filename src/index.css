@@ -50,6 +50,7 @@ h1, h2, h3, p { margin: 0; }
 .mode-name { color: #7ad97a; font-weight: 700; text-transform: uppercase; letter-spacing: 0.24em; font-size: 0.76rem; margin-bottom: 8px; }
 .ring h2 { font-size: 3rem; margin-bottom: 8px; }
 .status { color: #b6c6d8; }
+.cycle-progress { max-width: 430px; margin: 14px auto 0; color: #cfe0f5; font-size: 0.9rem; line-height: 1.5; text-align: center; }
 .controls { display: flex; gap: 10px; justify-content: center; margin-top: 18px; flex-wrap: wrap; }
 .controls button, .task-input-row button, .task-actions button { border: none; border-radius: 999px; padding: 10px 14px; color: white; }
 .controls .primary { min-width: 0; max-width: min(100%, 430px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

@@ -152,6 +152,9 @@ const atModeStart = computed(() => secondsLeft.value === modeDuration(currentMod
 const canStart = computed(() => !running.value && (currentMode.value !== 'focus' || Boolean(activeTask.value)));
 const canSwitchMode = computed(() => !running.value && atModeStart.value);
 const dailyProgress = computed(() => Math.min(completedPomodoros.value, dailyTarget.value));
+const cycleFocusCount = computed(() => completedPomodoros.value % 4);
+const remainingFocusSessions = computed(() => 4 - cycleFocusCount.value);
+const cycleProgressLabel = computed(() => `Long break cycle: ${cycleFocusCount.value} of 4 focus sessions. ${remainingFocusSessions.value} more focus ${remainingFocusSessions.value === 1 ? 'session' : 'sessions'} until a long break.`);
 const recentDailyHistory = computed(() => recentDateKeys().map((date) => ({
   date,
   count: dailyHistory.value[date] || 0,
@@ -565,6 +568,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div class="ring" :style="{ '--progress': `${renderProgress() * 100}%` }"><div class="ring-inner"><p class="mode-name">{{ formatModeLabel(currentMode) }}</p><h2>{{ timeLabel }}</h2><p class="status">{{ statusLabel }}</p></div></div>
+        <p class="cycle-progress" role="status">{{ cycleProgressLabel }}</p>
         <div class="controls">
           <button class="primary" :disabled="!canStart" @click="startTimer">{{ currentMode === 'focus' && activeTask ? `${atModeStart ? 'Start' : 'Resume'} ${effectiveFocusMinutes} min · ${activeTask.text}` : `${atModeStart ? 'Start' : 'Resume'} ${formatModeLabel(currentMode).toLowerCase()}` }}</button>
           <button class="secondary" :disabled="!running" @click="pauseTimer">Pause</button>

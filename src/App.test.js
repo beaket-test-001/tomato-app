@@ -56,6 +56,33 @@ describe('App', () => {
     expect(wrapper.find('.ring h2').text()).toBe('05:00');
   });
 
+  it('shows the daily long-break cycle in focus and break modes', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 13, 12));
+    localStorage.setItem('tomato-daily-focus-history', JSON.stringify({
+      version: 1,
+      days: { '2026-08-13': 2 },
+    }));
+    const wrapper = mount(App);
+
+    expect(wrapper.find('.cycle-progress').text()).toBe('Long break cycle: 2 of 4 focus sessions. 2 more focus sessions until a long break.');
+    await wrapper.findAll('.mode-btn').find((button) => button.text() === 'Short break').trigger('click');
+    expect(wrapper.find('.cycle-progress').text()).toBe('Long break cycle: 2 of 4 focus sessions. 2 more focus sessions until a long break.');
+  });
+
+  it('resets the cycle display after the fourth completed focus session', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 7, 13, 12));
+    localStorage.setItem('tomato-daily-progress', JSON.stringify({ date: '2026-08-13', count: 3 }));
+    const wrapper = mount(App);
+    await addFocusTask(wrapper);
+    await wrapper.find('.primary').trigger('click');
+    await vi.advanceTimersByTimeAsync(25 * 60 * 1000);
+
+    expect(wrapper.find('.mode-name').text()).toBe('Long break');
+    expect(wrapper.find('.cycle-progress').text()).toBe('Long break cycle: 0 of 4 focus sessions. 4 more focus sessions until a long break.');
+  });
+
   it('switches to a research-informed preset without presenting it as a limit', async () => {
     const wrapper = mount(App);
     const deepPreset = wrapper.findAll('.preset-card').find((button) => button.text().includes('Deep work'));
