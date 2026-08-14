@@ -1,0 +1,5 @@
+import { mount } from '@vue/test-utils';
+import { expect, it, vi } from 'vitest';
+import TimerPanel from './timer-panel.vue';
+
+it('adds a focus task through the model interface', async () => { const addTask = vi.fn(); const model = { modes: [{ key: 'focus', label: 'Focus' }], presets: [], currentMode: 'focus', canSwitchMode: true, taskInput: 'Test timer', activeTask: null, customFocusMinutes: null, selectedPresetKey: 'starter', running: false, timeLabel: '25:00', statusLabel: 'Ready', cycleProgressLabel: 'Long break cycle: 0 of 4', canStart: false, atModeStart: true, effectiveFocusMinutes: 25, soundEnabled: true, awaitingFeedback: false, recommendation: null, formatModeLabel: () => 'Focus', renderProgress: () => 0, pickMode: vi.fn(), addTask, startTimer: vi.fn(), pauseTimer: vi.fn(), cancelSession: vi.fn(), toggleSound: vi.fn() }; const wrapper = mount(TimerPanel, { props: { model } }); await wrapper.find('.task-input-row button').trigger('click'); expect(addTask).toHaveBeenCalledOnce(); });
