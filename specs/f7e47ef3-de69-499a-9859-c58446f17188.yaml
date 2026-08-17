@@ -1,0 +1,12 @@
+version: 1
+id: f7e47ef3-de69-499a-9859-c58446f17188
+question: 達成判定の単位をFocus完了回数とするか、合計集中時間とするか？
+answer: "TEST ANSWER (written by Claude to verify the S3 pipeline, not a real decision): Focus完了回数で数える。Focus長は当面固定なので、時間基準にする利点がない。"
+settled_at: 2026-08-17T13:24:32.416Z
+evidence:
+  - source: notion
+    ref: notion:page/3bfdbd07-f260-81b1-b600-edae1078a3be
+    title: 日次目標の達成判定の単位を決める
+    fingerprint: sha256:9f287a9f1e787ac3053958c25f39b2ff865c5361b6fa861f041fd25acd7779da
+    contract: notion/1
+    dated_at: 2026-08-17T01:43:00.000Z
