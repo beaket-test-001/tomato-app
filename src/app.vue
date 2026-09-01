@@ -15,6 +15,6 @@ const garden = reactive(useTomatoGarden());
     <section class="content-grid"><TimerPanel :model="garden" /><GardenPanel :model="garden" /></section>
     <section class="content-grid lower-grid"><TaskPanel :model="garden" /></section>
     <PreferencesPanel :model="garden" />
-    <footer class="storage-note">Tasks, preferences, and session counts are stored only in this browser.</footer>
+    <footer class="storage-note">Tasks, preferences, and time counts are stored only in this browser.</footer>
   </main>
 </template>
