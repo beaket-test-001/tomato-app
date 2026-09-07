@@ -1,0 +1,2 @@
+policy:
+  answer: "TEST ANSWER (written by Claude to verify the S3 pipeline, not a real decision): Focus完了回数で数える。Focus長は当面固定なので、時間基準にする利点がない。"
