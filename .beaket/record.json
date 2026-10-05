@@ -22,6 +22,13 @@
       },
       "checked": "2026-10-05",
       "full": "2026-10-05"
+    },
+    "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3": {
+      "sections": {
+        "(top)": "ac608db62d5304d8"
+      },
+      "checked": "2026-10-05",
+      "full": "2026-10-05"
     }
   },
   "questions": [
@@ -109,6 +116,54 @@
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
       "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+    },
+    {
+      "id": "Q6",
+      "place": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3",
+      "section": "(top)",
+      "raised": "2026-10-05",
+      "text": "今の画面のどこが「怖い」と感じますか。A: 暗い背景（今は紺色に近いダークテーマ） B: 色以外（言葉、絵、通知音など）",
+      "why": "ページは「子供が見るとこのアプリが怖い」と書くが、何が怖いのかを書いていない。現行の画面は color-scheme: dark で、背景は #07111f（紺に近い黒）から緑のグラデーション（src/index.css）。原因によって直す場所が変わる。",
+      "suggested": "beaket-test-001（提案者）",
+      "asked": "2026-10-05",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q7",
+      "place": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3",
+      "section": "(top)",
+      "raised": "2026-10-05",
+      "text": "子供向けの見た目は、誰の画面に出しますか。A: すべての利用者の見た目を変える B: 設定で「子供向け」を選んだときだけ変える（設定が1つ増え、ブラウザに保存する値も1つ増える）",
+      "why": "ページは「子供が見ると」と書くが、大人の利用者の見た目も変えるのかを書いていない。全員の見た目を変えるなら、PROP・意思決定の承認ルールでいう「大規模UI刷新」にあたり、人の承認が必要になる。",
+      "suggested": "beaket-test-001（提案者）",
+      "asked": "2026-10-05",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q8",
+      "place": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3",
+      "section": "(top)",
+      "raised": "2026-10-05",
+      "text": "赤と黄色をどこに使いますか。A: 背景は明るい色にして、ボタンや強調に赤と黄色を使う（文字は濃い色のまま） B: 背景も赤と黄色にする",
+      "why": "ページは「赤と黄色で構成する」と書くが、どこに使うかを書いていない。黄色の上の白い文字のように読みにくい組み合わせになるおそれがあり、正式仕様は「状態は色だけに依存せず、ラベルとテキストで伝える」と定める。今のボタンの強調はオレンジ（#f97316 から #ffb347）。",
+      "suggested": "beaket-test-001（提案者）",
+      "asked": "2026-10-05",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q9",
+      "place": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3",
+      "section": "(top)",
+      "raised": "2026-10-05",
+      "text": "「明るいイメージ」は色だけですか。A: 色だけ変える B: 絵やキャラクターも加える（絵文字は原則使わないルールのため、画像を新しく用意する）",
+      "why": "ページは「もっと明るいイメージで」と書くが、色のほかに何を変えるかを書いていない。PROP・意思決定の判断原則は「絵文字は原則として使用しない」と定める。",
+      "suggested": "beaket-test-001（提案者）",
+      "asked": "2026-10-05",
+      "decider": null,
+      "status": "candidate"
     }
   ]
 }
