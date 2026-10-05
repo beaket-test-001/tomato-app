@@ -4,6 +4,7 @@
   ],
   "places": {
     "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7": {
+      "title": "PROP-20260814-keyboard-accessibility キーボード操作とフォーカス表示の品質を整える",
       "sections": {
         "(top)": "e3b0c44298fc1c14",
         "提案日": "1e96549e39569b78",
@@ -24,6 +25,7 @@
       "full": "2026-10-05"
     },
     "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3": {
+      "title": "PROP-20261005-kids-ui 子供のためのUI改善",
       "sections": {
         "(top)": "ac608db62d5304d8"
       },
@@ -47,7 +49,17 @@
       "reason": "의미적으로는 Cancel",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bcdbd07f260819d986ec3fd6501defa",
+          "label": "正式仕様「タスクと操作導線」: Start、Pause、Cancelを区別すると定め、Resetはない"
+        },
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/components/timer-panel.vue",
+          "label": "コード: Focus中は Cancel session、休憩中は同じ位置に Skip break"
+        }
+      ]
     },
     {
       "id": "Q2",
@@ -64,7 +76,17 @@
       "reason": "구현에 시간이 많이 걸려서",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f",
+      "related": [
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/app.vue",
+          "label": "コード: 画面の並び Timer → Garden → Task queue → Settings"
+        },
+        {
+          "url": "https://app.notion.com/p/3bcdbd07f260819d986ec3fd6501defa",
+          "label": "正式仕様「タスクと操作導線」: Focus開始前に対象タスクを選ぶ"
+        }
+      ]
     },
     {
       "id": "Q3",
@@ -81,7 +103,17 @@
       "reason": "유저에게 좋은 UX 를 제공하기 위해",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f",
+      "related": [
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/components/task-panel.vue",
+          "label": "コード: タスクの編集・削除・Undo（フォーカス移動はない）"
+        },
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/components/preferences-panel.vue",
+          "label": "コード: Settingsの開閉ボタン"
+        }
+      ]
     },
     {
       "id": "Q4",
@@ -98,7 +130,17 @@
       "reason": "빠르게 출시하기 위해",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f",
+      "related": [
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/index.css",
+          "label": "コード: :focus-visible の規則はない"
+        },
+        {
+          "url": "https://app.notion.com/p/3bcdbd07f260819d986ec3fd6501defa",
+          "label": "正式仕様「タスクと操作導線」: 状態は色だけに依存せず、ラベルとテキストで伝える"
+        }
+      ]
     },
     {
       "id": "Q5",
@@ -115,7 +157,17 @@
       "reason": "UX 가 올라가니까.",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+          "label": "Q3の回答: 操作ごとに移動先を決める（このPROPのコメント）"
+        },
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/components/task-panel.vue",
+          "label": "コード: タスクの編集・削除・Undo"
+        }
+      ]
     },
     {
       "id": "Q6",
@@ -132,7 +184,13 @@
       "reason": "검은색이니까. 무서워",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
+      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6",
+      "related": [
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/index.css",
+          "label": "コード: color-scheme: dark、背景 #07111f から緑のグラデーション"
+        }
+      ]
     },
     {
       "id": "Q7",
@@ -149,7 +207,17 @@
       "reason": "원래 이어플은 어린이용이야.",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
+      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bbdbd07f2608058909fdd895a9d9fcb",
+          "label": "PROP・意思決定の承認ルール: 大規模UI刷新は人の承認が必要"
+        },
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/components/preferences-panel.vue",
+          "label": "コード: 今の設定画面（子供向けの切り替えを足すならここ）"
+        }
+      ]
     },
     {
       "id": "Q8",
@@ -166,7 +234,17 @@
       "reason": "임팩트가 크니까",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
+      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bcdbd07f260819d986ec3fd6501defa",
+          "label": "正式仕様「タスクと操作導線」: 状態は色だけに依存せず、ラベルとテキストで伝える"
+        },
+        {
+          "url": "https://github.com/beaket-test-001/tomato-app/blob/b5bfe143f3a073d10755d6c67bbdfa9ca5744984/src/index.css",
+          "label": "コード: 強調色はオレンジ #f97316 から #ffb347"
+        }
+      ]
     },
     {
       "id": "Q9",
@@ -183,7 +261,13 @@
       "reason": "알기쉬워",
       "recorded_by": "Jihnma",
       "recorded_at": "2026-10-05",
-      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
+      "posted": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bbdbd07f2608058909fdd895a9d9fcb",
+          "label": "PROP・意思決定の判断原則: 絵文字は原則として使用しない"
+        }
+      ]
     }
   ]
 }
