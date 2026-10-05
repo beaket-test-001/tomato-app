@@ -1,0 +1,77 @@
+{
+  "rounds": [
+    "2026-10-05"
+  ],
+  "places": {
+    "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7": {
+      "sections": {
+        "(top)": "e3b0c44298fc1c14",
+        "提案日": "1e96549e39569b78",
+        "ユーザー課題": "b0cfb3f47b5fbe51",
+        "期待する価値": "960b381260dba931",
+        "対象ユーザーと利用シナリオ": "38a1dc158322b80b",
+        "仕様案": "878b8bbd5a238b38",
+        "受け入れ条件": "57a714a35aaf7ffb",
+        "対象外": "a6aac47ba63ef08a",
+        "代替案": "87d26269ef1f5edc",
+        "リスク・未決事項": "505b4e442ef4bc93",
+        "テスト観点": "f2d1dad6493761a2",
+        "関連する既存機能・issue・pr": "3ae42c5a76ff7e2e",
+        "議論ログ": "cccb122203226d1f",
+        "実装準備（確認待ち）": "0f5dbc7b3db47546"
+      },
+      "checked": "2026-10-05",
+      "full": "2026-10-05"
+    }
+  },
+  "questions": [
+    {
+      "id": "Q1",
+      "place": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+      "section": "受け入れ条件",
+      "raised": "2026-10-05",
+      "text": "受け入れ条件の「Reset」はどの操作ですか。A: Focus中の「Cancel session」（休憩中の「Skip break」は別操作のまま） B: 新しいResetボタンを追加する（正式仕様の変更が必要）",
+      "why": "受け入れ条件は「Start、Pause、Resetへ到達して実行できる」と書くが、正式仕様（タスクと操作導線）はStart、Pause、Cancelだけを定める。現行コードにResetボタンはなく、Focus中は「Cancel session」、休憩中は同じ位置に「Skip break」がある（src/components/timer-panel.vue）。",
+      "suggested": "beaket-test-001（PROP承認者）",
+      "asked": "2026-08-14",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q2",
+      "place": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+      "section": "仕様案",
+      "raised": "2026-10-05",
+      "text": "Tab順はどうしますか。A: 今の画面の並び（Timer → Task queue → Settings）のまま B: 既存タスクの選択（Focus next）をStartより前に移す（画面の並びの変更が必要）",
+      "why": "仕様案は「既存の主要操作をTab順で自然に移動できる」と書くが、「自然な順」を定めていない。現行のDOM順では、既存タスクの「Focus next」がタイマー操作の後に来る。",
+      "suggested": "beaket-test-001（PROP承認者）",
+      "asked": "2026-08-14",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q3",
+      "place": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+      "section": "実装準備（確認待ち）",
+      "raised": "2026-10-05",
+      "text": "表示が変わる操作の後、フォーカスをどこに置きますか（タスクの編集開始・保存・取消、削除とUndo、Settingsの開閉）。A: 今回は対象外（ブラウザの動きのまま） B: 対象にする（操作ごとに移動先を決める）",
+      "why": "実装準備は保留理由に「Edit/Remove・動的UIのフォーカス方針が未確定」を挙げる。現行コードに .focus() によるフォーカス移動はない。",
+      "suggested": "beaket-test-001（PROP承認者）",
+      "asked": "2026-08-15",
+      "decider": null,
+      "status": "candidate"
+    },
+    {
+      "id": "Q4",
+      "place": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+      "section": "仕様案",
+      "raised": "2026-10-05",
+      "text": "フォーカス表示（:focus-visible）をどこまで付けますか。A: すべてのボタン・入力・リンク B: 主要な操作だけ",
+      "why": "仕様案は「フォーカス中の操作要素を、色だけに依存しない明確な視覚表示にする」と書くが、対象の範囲を定めていない。現行のCSSに :focus-visible の規則はない。",
+      "suggested": "beaket-test-001（PROP承認者）",
+      "asked": "2026-08-15",
+      "decider": null,
+      "status": "candidate"
+    }
+  ]
+}
