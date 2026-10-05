@@ -142,8 +142,12 @@
       "why": "ページは「子供が見ると」と書くが、大人の利用者の見た目も変えるのかを書いていない。全員の見た目を変えるなら、PROP・意思決定の承認ルールでいう「大規模UI刷新」にあたり、人の承認が必要になる。",
       "suggested": "beaket-test-001（提案者）",
       "asked": "2026-10-05",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（提案者）",
+      "status": "decided",
+      "answer": "A: すべての利用者の見た目を変える",
+      "reason": "원래 이어플은 어린이용이야.",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     },
     {
       "id": "Q8",
