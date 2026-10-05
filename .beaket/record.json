@@ -39,7 +39,8 @@
       "answer": "A: Focus中の「Cancel session」",
       "reason": "의미적으로는 Cancel",
       "recorded_by": "Jihnma",
-      "recorded_at": "2026-10-05"
+      "recorded_at": "2026-10-05",
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
     },
     {
       "id": "Q2",
@@ -55,7 +56,8 @@
       "answer": "今の画面の並び（Timer → Task queue → Settings）のまま",
       "reason": "구현에 시간이 많이 걸려서",
       "recorded_by": "Jihnma",
-      "recorded_at": "2026-10-05"
+      "recorded_at": "2026-10-05",
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
     },
     {
       "id": "Q3",
@@ -71,7 +73,8 @@
       "answer": "B: 対象にする（操作ごとに移動先を決める）",
       "reason": "유저에게 좋은 UX 를 제공하기 위해",
       "recorded_by": "Jihnma",
-      "recorded_at": "2026-10-05"
+      "recorded_at": "2026-10-05",
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
     },
     {
       "id": "Q4",
@@ -87,7 +90,20 @@
       "answer": "B: 主要な操作だけ",
       "reason": "빠르게 출시하기 위해",
       "recorded_by": "Jihnma",
-      "recorded_at": "2026-10-05"
+      "recorded_at": "2026-10-05",
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
+    },
+    {
+      "id": "Q5",
+      "place": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
+      "section": "実装準備（確認待ち）",
+      "raised": "2026-10-05",
+      "text": "Q3でB（操作ごとに移動先を決める）に決まりました。各操作の後のフォーカス先をどうしますか。A: 編集開始→入力欄、保存・取消→そのタスクのEditボタン、削除→Undoボタン、Undo→戻ったタスク、Settings開閉→開閉ボタンのまま B: 操作ごとに直接決める",
+      "why": "Q3の回答（2026-10-05）で、条件付きUIのフォーカス移動を対象にすると決まったが、移動先はまだ決まっていない。現行コードに .focus() はなく、Edit/Remove/Undo と Settings の開閉は src/components の各パネルにある。",
+      "suggested": "beaket-test-001（PROP承認者）",
+      "asked": "2026-10-05",
+      "decider": null,
+      "status": "candidate"
     }
   ]
 }
