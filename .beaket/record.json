@@ -324,6 +324,32 @@
         }
       ],
       "discussion": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
+    },
+    {
+      "id": "Q10",
+      "place": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3",
+      "section": "(top)",
+      "raised": "2026-10-05",
+      "text": "Approval on the page",
+      "why": "承認ルール:「複数機能にまたがる大規模UI刷新…は人の承認が必要である。ユーザー本人が対象PROPデータベースページのコメントに『承認 PROP-ID』と完全一致で記載するまで…行わない」。Q7=すべての利用者、Q8=背景も赤と黄色で、全画面の見た目が変わる。このページに承認コメントはまだない。",
+      "suggested": null,
+      "asked": "2026-10-05",
+      "decider": "beaket-test-001（ユーザー本人）",
+      "status": "open",
+      "kind": "approval",
+      "related": [
+        {
+          "url": "https://app.notion.com/p/3bbdbd07f2608058909fdd895a9d9fcb",
+          "label": "PROP・意思決定: 大規模UI刷新は人の承認（PROPページに「承認 PROP-ID」と完全一致）"
+        }
+      ],
+      "discussion": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6&pvs=42",
+      "mentioned": [
+        {
+          "at": "2026-10-05",
+          "url": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6&pvs=42"
+        }
+      ]
     }
   ]
 }
