@@ -107,7 +107,8 @@
       "answer": "A: 編集開始→入力欄、保存・取消→そのタスクのEditボタン、削除→Undoボタン、Undo→戻ったタスク、Settings開閉→開閉ボタンのまま",
       "reason": "UX 가 올라가니까.",
       "recorded_by": "Jihnma",
-      "recorded_at": "2026-10-05"
+      "recorded_at": "2026-10-05",
+      "posted": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7?d=3bcdbd07f26081ea8366001c754ce43f"
     }
   ]
 }
