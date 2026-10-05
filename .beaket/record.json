@@ -34,8 +34,12 @@
       "why": "受け入れ条件は「Start、Pause、Resetへ到達して実行できる」と書くが、正式仕様（タスクと操作導線）はStart、Pause、Cancelだけを定める。現行コードにResetボタンはなく、Focus中は「Cancel session」、休憩中は同じ位置に「Skip break」がある（src/components/timer-panel.vue）。",
       "suggested": "beaket-test-001（PROP承認者）",
       "asked": "2026-08-14",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（PROP承認者）",
+      "status": "decided",
+      "answer": "A: Focus中の「Cancel session」",
+      "reason": "의미적으로는 Cancel",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     },
     {
       "id": "Q2",
