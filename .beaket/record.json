@@ -126,8 +126,12 @@
       "why": "ページは「子供が見るとこのアプリが怖い」と書くが、何が怖いのかを書いていない。現行の画面は color-scheme: dark で、背景は #07111f（紺に近い黒）から緑のグラデーション（src/index.css）。原因によって直す場所が変わる。",
       "suggested": "beaket-test-001（提案者）",
       "asked": "2026-10-05",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（提案者）",
+      "status": "decided",
+      "answer": "A: 暗い背景（今は紺色に近いダークテーマ）",
+      "reason": "검은색이니까. 무서워",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     },
     {
       "id": "Q7",
