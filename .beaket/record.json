@@ -50,8 +50,12 @@
       "why": "仕様案は「既存の主要操作をTab順で自然に移動できる」と書くが、「自然な順」を定めていない。現行のDOM順では、既存タスクの「Focus next」がタイマー操作の後に来る。",
       "suggested": "beaket-test-001（PROP承認者）",
       "asked": "2026-08-14",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（PROP承認者）",
+      "status": "decided",
+      "answer": "今の画面の並び（Timer → Task queue → Settings）のまま",
+      "reason": "구현에 시간이 많이 걸려서",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     },
     {
       "id": "Q3",
