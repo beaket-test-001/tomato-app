@@ -102,8 +102,12 @@
       "why": "Q3の回答（2026-10-05）で、条件付きUIのフォーカス移動を対象にすると決まったが、移動先はまだ決まっていない。現行コードに .focus() はなく、Edit/Remove/Undo と Settings の開閉は src/components の各パネルにある。",
       "suggested": "beaket-test-001（PROP承認者）",
       "asked": "2026-10-05",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（PROP承認者）",
+      "status": "decided",
+      "answer": "A: 編集開始→入力欄、保存・取消→そのタスクのEditボタン、削除→Undoボタン、Undo→戻ったタスク、Settings開閉→開閉ボタンのまま",
+      "reason": "UX 가 올라가니까.",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     }
   ]
 }
