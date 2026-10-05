@@ -158,8 +158,12 @@
       "why": "ページは「赤と黄色で構成する」と書くが、どこに使うかを書いていない。黄色の上の白い文字のように読みにくい組み合わせになるおそれがあり、正式仕様は「状態は色だけに依存せず、ラベルとテキストで伝える」と定める。今のボタンの強調はオレンジ（#f97316 から #ffb347）。",
       "suggested": "beaket-test-001（提案者）",
       "asked": "2026-10-05",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（提案者）",
+      "status": "decided",
+      "answer": "B: 背景も赤と黄色にする",
+      "reason": "임팩트가 크니까",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     },
     {
       "id": "Q9",
