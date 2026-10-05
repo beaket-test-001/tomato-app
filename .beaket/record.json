@@ -82,8 +82,12 @@
       "why": "仕様案は「フォーカス中の操作要素を、色だけに依存しない明確な視覚表示にする」と書くが、対象の範囲を定めていない。現行のCSSに :focus-visible の規則はない。",
       "suggested": "beaket-test-001（PROP承認者）",
       "asked": "2026-08-15",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（PROP承認者）",
+      "status": "decided",
+      "answer": "B: 主要な操作だけ",
+      "reason": "빠르게 출시하기 위해",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     }
   ]
 }
