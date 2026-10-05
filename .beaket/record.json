@@ -174,8 +174,12 @@
       "why": "ページは「もっと明るいイメージで」と書くが、色のほかに何を変えるかを書いていない。PROP・意思決定の判断原則は「絵文字は原則として使用しない」と定める。",
       "suggested": "beaket-test-001（提案者）",
       "asked": "2026-10-05",
-      "decider": null,
-      "status": "candidate"
+      "decider": "beaket-test-001（提案者）",
+      "status": "decided",
+      "answer": "A: 色だけ変える",
+      "reason": "알기쉬워",
+      "recorded_by": "Jihnma",
+      "recorded_at": "2026-10-05"
     }
   ]
 }
