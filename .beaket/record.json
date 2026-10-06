@@ -1,6 +1,7 @@
 {
   "rounds": [
-    "2026-10-05"
+    "2026-10-05",
+    "2026-10-06"
   ],
   "places": {
     "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7": {
@@ -18,11 +19,9 @@
         "リスク・未決事項": "505b4e442ef4bc93",
         "テスト観点": "f2d1dad6493761a2",
         "関連する既存機能・issue・pr": "3ae42c5a76ff7e2e",
-        "議論ログ": "cccb122203226d1f",
-        "実装準備（確認待ち）": "0f5dbc7b3db47546"
+        "議論ログ": "d558d0e53cf4dd71",
+        "実装準備（確認待ち）": "74b7cc451bfc4d06"
       },
-      "checked": "2026-10-05",
-      "full": "2026-10-05",
       "lines": {
         "(top)": "（見出しの前に本文なし）",
         "提案日": "2026-08-14 に提案",
@@ -52,15 +51,16 @@
           "url": "https://app.notion.com/p/3bbdbd07f2608058909fdd895a9d9fcb",
           "label": "PROP・意思決定: 承認ルールと判断原則"
         }
-      ]
+      ],
+      "unpinned": [],
+      "checked": "2026-10-06",
+      "full": "2026-10-05"
     },
     "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3": {
       "title": "PROP-20261005-kids-ui 子供のためのUI改善",
       "sections": {
         "(top)": "ac608db62d5304d8"
       },
-      "checked": "2026-10-05",
-      "full": "2026-10-05",
       "lines": {
         "(top)": "子供が怖がるので、明るい印象にしたい。赤と黄色で構成する案"
       },
@@ -77,7 +77,10 @@
           "url": "https://app.notion.com/p/3bcdbd07f26081478b16e5a5137230c7",
           "label": "PROP キーボード操作とフォーカス表示: 主要操作に :focus-visible（色を変えるなら見え方に影響）"
         }
-      ]
+      ],
+      "unpinned": [],
+      "checked": "2026-10-06",
+      "full": "2026-10-05"
     }
   },
   "questions": [
@@ -348,6 +351,10 @@
         {
           "at": "2026-10-05",
           "url": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6&pvs=42"
+        },
+        {
+          "at": "2026-10-06",
+          "url": "https://app.notion.com/p/3f0dbd07f26080cc98d9ce11ce24a8c3?d=3f0dbd07f26081dea2d8001ceb1618f6"
         }
       ]
     }
